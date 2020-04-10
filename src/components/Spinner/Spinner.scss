@@ -1,0 +1,40 @@
+@import "vars.scss";
+
+.component.spinner {
+  margin: 10px auto;
+
+  &.medium {
+    width: 32px;
+
+    .inner {
+      border-width: 8px;
+    }
+  }
+
+  &.large {
+    width: 48px;
+
+    .inner {
+      border-width: 12px;
+    }
+  }
+
+  &.small {
+    width: 16px;
+
+    .inner {
+      border-width: 4px;
+    }
+  }
+
+  .inner {
+    border-radius: 100%;
+    border-style: solid;
+    border-color: $accentColor;
+    border-right-color: transparent;
+
+    // 1:1 aspect ratio
+    width: 100%;
+    padding-top: 100%;
+  }
+}
