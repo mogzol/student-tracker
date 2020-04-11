@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import GoogleProvider from "providers/GoogleProvider/GoogleProvider";
+import DataProvider from "providers/DataProvider/DataProvider";
 import RequireLogin from "components/RequireLogin/RequireLogin";
 import HeaderActions from "components/HeaderActions/HeaderActions";
+import StudentTable from "components/StudentList/StudentList";
 import "./index.scss";
 
 function App() {
@@ -15,7 +17,7 @@ function App() {
       </div>
       <div className="main box flex-center">
         <RequireLogin>
-          <div>Logged In</div>
+          <StudentTable />
         </RequireLogin>
       </div>
     </div>
@@ -25,7 +27,9 @@ function App() {
 ReactDOM.render(
   <React.StrictMode>
     <GoogleProvider>
-      <App />
+      <DataProvider>
+        <App />
+      </DataProvider>
     </GoogleProvider>
   </React.StrictMode>,
   document.getElementById("root")

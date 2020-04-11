@@ -1,4 +1,6 @@
 const Dotenv = require("dotenv-webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 module.exports = {
   mode: "production",
@@ -8,7 +10,13 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
     modules: ["node_modules", "src"],
   },
-  plugins: [new Dotenv()],
+  plugins: [
+    new Dotenv(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static",
+      reportFilename: "webpack-bundle-report.html",
+    }),
+  ],
   module: {
     rules: [
       {

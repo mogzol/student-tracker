@@ -1,18 +1,15 @@
 import React from "react";
 import * as api from "./apiHelper";
 
-interface GoogleContextFunctions {
+interface GoogleContext {
+  ready: boolean;
+  signedIn: boolean;
+  signingIn: boolean;
   signIn: () => Promise<void>;
   signOut: () => void;
   getData: () => Promise<object | void>;
   setData: (data: object) => Promise<void>;
   clearData: () => Promise<void>;
-}
-
-interface GoogleContext extends GoogleContextFunctions {
-  ready: boolean;
-  signedIn: boolean;
-  signingIn: boolean;
 }
 
 // Set up empty initial context
@@ -95,7 +92,7 @@ export default function GoogleProvider(props: React.PropsWithChildren<{}>) {
       {error && (
         <div className="overlay flex-center">
           <div className="box modal">
-            <i className="fas fa-exclamation-triangle error"></i>
+            <i className="fas fa-exclamation-triangle error" />
             An error occurred communicating with Google. Please refresh the page
             and try again.
             {(error.message || error.result?.error?.message) && (
