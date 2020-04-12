@@ -1,34 +1,32 @@
 import React from "react";
 import { GoogleContext } from "providers/GoogleProvider/GoogleProvider";
-import Spinner, { SpinnerSize } from "components/Spinner/Spinner";
+import Spinner from "components/Spinner/Spinner";
+import Button from "components/Button/Button";
+import Modal from "components/Modal/Modal";
 import "./RequireLogin.scss";
 
 export default function RequireLogin(props: React.PropsWithChildren<{}>) {
   const googleContext = React.useContext(GoogleContext);
 
   if (!googleContext.ready || googleContext.signingIn) {
-    return <Spinner size={SpinnerSize.Medium} />;
+    return <Spinner />;
   }
 
   if (!googleContext.signedIn) {
     return (
-      <div className="component require-login overlay flex-center">
-        <div className="box modal flex-center">
-          <div className="title">Please Sign In</div>
-          <div className="text">
-            Student Communication Tracker uses your Google Drive account to
-            store data. Please sign in with Google using the button below.
-          </div>
-          <button onClick={googleContext.signIn} className="button">
-            Sign In with Google
-          </button>
-          <div className="disclaimer">
-            Note: This only gives the app access to its own data. Other data in
-            your drive will not be accessed or modified. No information about
-            you will be stored.
-          </div>
+      <Modal className="login" width="narrow">
+        <div className="title">Please Sign In</div>
+        <div className="text">
+          Student Communication Tracker uses your Google Drive account to store
+          data. Please sign in with Google using the button below.
         </div>
-      </div>
+        <Button text="Sign In with Google" onClick={googleContext.signIn} />
+        <div className="disclaimer">
+          This will only gives the app access to its own data. Other data in
+          your drive will not be accessed or modified. No information about you
+          will be stored.
+        </div>
+      </Modal>
     );
   }
 

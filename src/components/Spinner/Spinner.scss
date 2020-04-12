@@ -2,13 +2,18 @@
 
 .component.spinner {
   margin: 10px auto;
+  width: 32px;
 
-  &.medium {
-    width: 32px;
+  .inner {
+    border-radius: 100%;
+    border-style: solid;
+    border-color: $accentColor;
+    border-right-color: transparent;
+    border-width: 8px;
 
-    .inner {
-      border-width: 8px;
-    }
+    // 1:1 aspect ratio
+    width: 100%;
+    padding-top: 100%;
   }
 
   &.large {
@@ -25,16 +30,5 @@
     .inner {
       border-width: 4px;
     }
-  }
-
-  .inner {
-    border-radius: 100%;
-    border-style: solid;
-    border-color: $accentColor;
-    border-right-color: transparent;
-
-    // 1:1 aspect ratio
-    width: 100%;
-    padding-top: 100%;
   }
 }

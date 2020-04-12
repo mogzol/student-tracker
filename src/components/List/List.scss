@@ -1,11 +1,6 @@
 @import "vars.scss";
 
-// If we are viewing student details, hide the list
-.component.student-details + .component.student-list {
-  display: none;
-}
-
-.component.student-list {
+.component.list {
   display: flex;
   flex-direction: column;
 

@@ -1,5 +1,6 @@
 import React from "react";
 import * as api from "./apiHelper";
+import Modal from "components/Modal/Modal";
 
 interface GoogleContext {
   ready: boolean;
@@ -90,9 +91,8 @@ export default function GoogleProvider(props: React.PropsWithChildren<{}>) {
   return (
     <>
       {error && (
-        <div className="overlay flex-center">
-          <div className="box modal">
-            <i className="fas fa-exclamation-triangle error" />
+        <Modal icon="fas fa-exclamation-triangle danger">
+          <span>
             An error occurred communicating with Google. Please refresh the page
             and try again.
             {(error.message || error.result?.error?.message) && (
@@ -103,8 +103,8 @@ export default function GoogleProvider(props: React.PropsWithChildren<{}>) {
                 {error.message || error.result?.error?.message}
               </>
             )}
-          </div>
-        </div>
+          </span>
+        </Modal>
       )}
       <GoogleContext.Provider
         value={{

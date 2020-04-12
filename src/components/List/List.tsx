@@ -2,15 +2,17 @@ import React, { useContext } from "react";
 import { DataContext } from "providers/DataProvider/DataProvider";
 import StudentRow, { StudentData } from "components/StudentRow/StudentRow";
 import SimpleBar from "simplebar-react";
-import "./StudentList.scss";
+import "./List.scss";
 
 interface Props {
-  sortField?: "name" | "date";
+  data: object;
+  sortField?: string;
   sortDir?: "asc" | "desc";
-  onStudentSelected: (name: string) => void;
+  onSelected: (name: string) => void;
 }
 
-export default function StudentList(props: Props) {
+// TODO: Extract StudentList functionality to generic list component
+export default function List(props: Props) {
   const dataContext = useContext(DataContext);
 
   const studentRows = React.useMemo<StudentData[]>(() => {
@@ -48,7 +50,7 @@ export default function StudentList(props: Props) {
   }, [studentRows, sortField, sortDir]);
 
   return (
-    <div className="component student-list fill">
+    <div className="component list fill">
       <div className="list-headers">
         <div className="list-col name">Student Name</div>
         <div className="list-col date">Last Contacted</div>
@@ -59,7 +61,7 @@ export default function StudentList(props: Props) {
           <StudentRow
             data={row}
             key={row.name}
-            onClick={() => props.onStudentSelected(row.name)}
+            onClick={() => props.onSelected(row.name)}
           />
         ))}
       </SimpleBar>

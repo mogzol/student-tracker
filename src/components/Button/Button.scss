@@ -1,0 +1,49 @@
+@import "vars.scss";
+
+.component.button {
+  font-family: "Open Sans", sans-serif; // For FF
+  background-color: $accentColor;
+  color: $accentTextColor;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 2px 5px $overlayColor;
+  transition: background-color 0.2s;
+  display: block;
+
+  &:hover,
+  &:focus {
+    background-color: lighten($accentColor, 5%);
+    outline: 0;
+  }
+
+  &:active {
+    background-color: lighten($accentColor, 10%);
+  }
+
+  &.transparent {
+    box-shadow: none;
+    background-color: transparent;
+    color: $primaryColor;
+
+    &:hover,
+    &:focus {
+      background-color: transparentize($primaryColor, 0.95);
+    }
+
+    &:active {
+      background-color: transparentize($primaryColor, 0.9);
+    }
+  }
+
+  &.small {
+    font-size: 14px;
+  }
+
+  i {
+    margin-right: 5px;
+  }
+}

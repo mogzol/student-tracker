@@ -4,10 +4,13 @@ import GoogleProvider from "providers/GoogleProvider/GoogleProvider";
 import DataProvider from "providers/DataProvider/DataProvider";
 import RequireLogin from "components/RequireLogin/RequireLogin";
 import HeaderActions from "components/HeaderActions/HeaderActions";
-import StudentTable from "components/StudentList/StudentList";
+import StudentList from "components/StudentList/StudentList";
+import StudentDetails from "components/StudentDetails/StudentDetails";
 import "./index.scss";
 
 function App() {
+  const [studentName, setStudentName] = React.useState<string | null>(null);
+
   return (
     <div className="app">
       <div className="header">
@@ -17,7 +20,11 @@ function App() {
       </div>
       <div className="main box flex-center">
         <RequireLogin>
-          <StudentTable />
+          <StudentDetails
+            name={studentName}
+            onBack={() => setStudentName(null)}
+          />
+          <StudentList onStudentSelected={setStudentName} />
         </RequireLogin>
       </div>
     </div>

@@ -1,19 +1,13 @@
 import React from "react";
 import "./Spinner.scss";
 
-export enum SpinnerSize {
-  Large = "large",
-  Medium = "medium",
-  Small = "small",
-}
-
 interface Props {
-  size?: SpinnerSize;
+  size?: "small" | "medium" | "large";
 }
 
 export default function Spinner(props: Props) {
   return (
-    <div className={`component spinner ${props.size ?? SpinnerSize.Medium}`}>
+    <div className={`component spinner ${props.size}`}>
       <div className="inner rotate" />
     </div>
   );

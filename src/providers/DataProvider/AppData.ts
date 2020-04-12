@@ -16,7 +16,7 @@ function communicationSorter(a: Communication, b: Communication) {
 function parseCommunication(data: any): Communication | null {
   if (
     !(data instanceof Object) ||
-    typeof data.date !== "number" ||
+    typeof data.date !== "string" ||
     typeof data.type !== "string" ||
     typeof data.details !== "string"
   ) {
@@ -24,6 +24,9 @@ function parseCommunication(data: any): Communication | null {
   }
 
   const date = new Date(data.date);
+  if (isNaN(date.getTime())) {
+    return null;
+  }
 
   return {
     date,
