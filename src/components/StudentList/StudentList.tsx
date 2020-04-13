@@ -1,14 +1,43 @@
 import React, { useContext } from "react";
 import { DataContext } from "providers/DataProvider/DataProvider";
-import StudentRow, { StudentData } from "components/StudentRow/StudentRow";
-import SimpleBar from "simplebar-react";
+import { Communication } from "providers/DataProvider/AppData";
+import List, { Column } from "components/List/List";
+import DateString from "components/DateString/DateString";
 import "./StudentList.scss";
 
+// Extends partial because if no communications exist then we'll only have name
+export interface StudentData extends Partial<Communication> {
+  name: string;
+}
+
 interface Props {
-  sortField?: "name" | "date";
-  sortDir?: "asc" | "desc";
   onStudentSelected: (name: string) => void;
 }
+
+const columns: Column<StudentData>[] = [
+  { title: "Student Name", field: "name", sortable: true, width: 1.3 },
+  {
+    title: "Last Contacted",
+    field: "date",
+    sortable: true,
+    width: 1,
+    renderer: (data) => {
+      if (!data.date) {
+        return <strong className="danger">Never</strong>;
+      }
+
+      const typeClassName = data.type?.toLowerCase().replace(/\s/g, "-");
+      return (
+        <>
+          <DateString date={data.date} />
+          <br />
+          By <strong className={`type ${typeClassName}`}>{data.type}</strong>
+        </>
+      );
+    },
+  },
+  { title: "Details", field: "details", sortable: false, width: 1.6 },
+];
 
 export default function StudentList(props: Props) {
   const dataContext = useContext(DataContext);
@@ -21,48 +50,16 @@ export default function StudentList(props: Props) {
     }));
   }, [dataContext.data]);
 
-  const sortField = props.sortField ?? "name";
-  const sortDir = props.sortDir ?? "asc";
-
-  const sortedRows = React.useMemo<StudentData[]>(() => {
-    let sortFunc: (a: StudentData, b: StudentData) => number;
-    if (sortField === "date") {
-      sortFunc = (a: StudentData, b: StudentData) => {
-        // Dates might not be set if no communications
-        if (a.date && !b.date) return 1;
-        if (!a.date && b.date) return -1;
-        if (!a.date && !b.date) return 0;
-        return a.date.getTime() - b.date.getTime();
-      };
-    } else {
-      sortFunc = (a: StudentData, b: StudentData) =>
-        a.name.localeCompare(b.name);
-    }
-
-    if (sortDir === "desc") {
-      const origSortFunc = sortFunc;
-      sortFunc = (a: any, b: any) => origSortFunc(b, a);
-    }
-
-    return studentRows.sort(sortFunc);
-  }, [studentRows, sortField, sortDir]);
-
   return (
     <div className="component student-list fill">
-      <div className="list-headers">
-        <div className="list-col name">Student Name</div>
-        <div className="list-col date">Last Contacted</div>
-        <div className="list-col details">Details</div>
-      </div>
-      <SimpleBar className="rows">
-        {sortedRows.map((row) => (
-          <StudentRow
-            data={row}
-            key={row.name}
-            onClick={() => props.onStudentSelected(row.name)}
-          />
-        ))}
-      </SimpleBar>
+      <List
+        columns={columns}
+        data={studentRows}
+        rowKey={(row) => row.name}
+        deleteText="Delete Student"
+        onSelected={(row) => props.onStudentSelected(row.name)}
+        onDelete={(row) => console.log("Delete " + row.name)}
+      />
     </div>
   );
 }

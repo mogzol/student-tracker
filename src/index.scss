@@ -37,6 +37,11 @@ body {
     .title {
       font-size: 52px;
       line-height: 58px;
+      white-space: nowrap;
+
+      @media screen and (max-width: 950px) {
+        font-size: 45px;
+      }
     }
 
     .sub {
