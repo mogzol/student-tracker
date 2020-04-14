@@ -1,7 +1,7 @@
 import React from "react";
-import { DataContext } from "providers/DataProvider/DataProvider";
 import Button from "components/Button/Button";
 import "./StudentDetails.scss";
+import CommunicationList from "components/CommunicationList/CommunicationList";
 
 interface Props {
   name: string | null;
@@ -9,8 +9,6 @@ interface Props {
 }
 
 export default function StudentDetails(props: Props) {
-  const dataContext = React.useContext(DataContext);
-
   if (!props.name) {
     return null;
   }
@@ -26,6 +24,7 @@ export default function StudentDetails(props: Props) {
       <div className="title">
         Communications with <strong>{props.name}</strong>
       </div>
+      <CommunicationList studentName={props.name} />
     </div>
   );
 }

@@ -1,14 +1,17 @@
 .component.student-details {
-  padding: 40px;
+  padding: 20px;
   box-sizing: border-box;
-
-  .button {
-    margin-left: -20px;
-    margin-top: -20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
   .title {
     font-size: 32px;
-    margin: 20px 0;
+    margin: 20px;
+  }
+
+  .communication-list {
+    flex-grow: 1;
+    width: 100%;
   }
 }

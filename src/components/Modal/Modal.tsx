@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import classNames from "classnames";
+import Button from "components/Button/Button";
 import "./Modal.scss";
 
 const MODAL_ROOT = document.getElementById("modal-root") as HTMLElement;
@@ -9,6 +10,9 @@ interface Props {
   className?: string;
   icon?: string;
   width?: "narrow" | "normal";
+  onClose?: () => void;
+  onDelete?: () => void;
+  onConfirm?: () => void;
 }
 
 export default function Modal(props: React.PropsWithChildren<Props>) {
@@ -27,6 +31,42 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
     };
   }, [modalRootDiv]);
 
+  function renderButtons() {
+    if (!props.onClose && !props.onDelete && !props.onConfirm) {
+      return;
+    }
+
+    const buttons: JSX.Element[] = [];
+
+    if (props.onClose) {
+      buttons.push(
+        <Button
+          text={props.onConfirm || props.onDelete ? "Cancel" : "Close"}
+          color="transparent"
+          onClick={props.onClose}
+        />
+      );
+    }
+    if (props.onConfirm) {
+      buttons.push(
+        <Button text="Confirm" color="transparent" onClick={props.onConfirm} />
+      );
+    }
+    if (props.onDelete) {
+      buttons.push(
+        <Button text="Delete" color="transparent" onClick={props.onDelete} />
+      );
+    }
+
+    return (
+      <div className="modal-buttons">
+        {buttons.map((b, i) => (
+          <div key={i}>{b}</div>
+        ))}
+      </div>
+    );
+  }
+
   function renderModal() {
     return (
       <div
@@ -39,6 +79,7 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
         <div className="box flex-center">
           {props.icon && <i className={classNames("modal-icon", props.icon)} />}
           {props.children}
+          {renderButtons()}
         </div>
       </div>
     );

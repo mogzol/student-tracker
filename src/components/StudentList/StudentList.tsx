@@ -15,7 +15,7 @@ interface Props {
 }
 
 const columns: Column<StudentData>[] = [
-  { title: "Student Name", field: "name", sortable: true, width: 1.3 },
+  { title: "Student Name", field: "name", sortable: true, width: 1.2 },
   {
     title: "Last Contacted",
     field: "date",
@@ -55,8 +55,16 @@ export default function StudentList(props: Props) {
       <List
         columns={columns}
         data={studentRows}
+        initialSortField="name"
         rowKey={(row) => row.name}
         deleteText="Delete Student"
+        deleteModalText={(row) => (
+          <div>
+            {"Are you sure you want to delete "}
+            <strong>{row.name}</strong>
+            {"?"}
+          </div>
+        )}
         onSelected={(row) => props.onStudentSelected(row.name)}
         onDelete={(row) => console.log("Delete " + row.name)}
       />

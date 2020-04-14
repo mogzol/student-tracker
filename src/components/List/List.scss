@@ -6,11 +6,35 @@
 
   .headers {
     display: flex;
+    align-items: center;
+    height: 50px;
     font-size: 18px;
     font-weight: 600;
-    margin: 15px 0 0;
+    padding: 0 40px;
     border-bottom: 2px solid $dividerColor;
-    padding: 0 40px 15px;
+
+    .col {
+      user-select: none;
+
+      // Add padding to make clickable area larger
+      padding: 10px 0 12px 20px;
+      margin-left: -20px;
+
+      &.sortable {
+        cursor: pointer;
+
+        .sort-arrow {
+          color: $accentColor;
+          font-size: 17px;
+          margin-left: 10px;
+          vertical-align: 1px;
+        }
+
+        &:not(.sorted) .sort-arrow {
+          display: none;
+        }
+      }
+    }
   }
 
   .col {
@@ -34,6 +58,7 @@
         position: absolute;
         right: 20px;
         font-size: 20px;
+        padding: 10px;
         display: none;
       }
 

@@ -1,6 +1,8 @@
 import React from "react";
 import SimpleBar from "simplebar-react";
 import DateString from "components/DateString/DateString";
+import classNames from "classnames";
+import Modal from "components/Modal/Modal";
 import "./List.scss";
 
 export interface Column<T> {
@@ -14,10 +16,11 @@ export interface Column<T> {
 interface Props<T> {
   columns: Column<T>[];
   data: T[];
-  rowKey: (row: T) => string | number;
+  rowKey?: (row: T) => string | number;
   initialSortField?: keyof T;
   initialSortDir?: "asc" | "desc";
   deleteText?: string;
+  deleteModalText?: (row: T) => string | JSX.Element;
   onSelected?: (row: T) => void;
   onDelete?: (row: T) => void;
 }
@@ -30,6 +33,8 @@ export default function List<T>(props: Props<T>) {
   const [sortDir, setSortDir] = React.useState<"asc" | "desc">(
     props.initialSortDir ?? "asc"
   );
+
+  const [deleteRow, setDeleteRow] = React.useState<T | null>(null);
 
   const sortedRows = React.useMemo<T[]>(() => {
     if (!sortField) {
@@ -73,19 +78,59 @@ export default function List<T>(props: Props<T>) {
     }
   }, [props.data, sortField, sortDir]);
 
+  function handleSort(column: Column<T>) {
+    if (!column.sortable) {
+      return;
+    }
+
+    if (sortField === column.field) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(column.field);
+      setSortDir("asc");
+    }
+  }
+
+  function handleDelete(e: React.MouseEvent, row: T) {
+    e.stopPropagation();
+    setDeleteRow(row);
+  }
+
+  function handleConfirmDelete() {
+    props.onDelete?.(deleteRow as T);
+    setDeleteRow(null);
+  }
+
   return (
     <div className="component list fill">
       <div className="headers">
         {props.columns.map((col, i) => (
-          <div key={i} className="col" style={{ flexGrow: col.width }}>
+          <div
+            key={i}
+            className={classNames("col", {
+              sortable: col.sortable,
+              sorted: col.field === sortField,
+            })}
+            style={{ flexGrow: col.width }}
+            title={col.sortable ? "Click to sort" : undefined}
+            onClick={() => handleSort(col)}
+          >
             {col.title}
+            {col.sortable && (
+              <i
+                className={classNames(
+                  "fas sort-arrow",
+                  sortDir === "desc" ? "fa-arrow-up" : "fa-arrow-down"
+                )}
+              />
+            )}
           </div>
         ))}
       </div>
       <SimpleBar className="rows">
-        {sortedRows.map((row) => (
+        {sortedRows.map((row, i) => (
           <div
-            key={props.rowKey(row)}
+            key={props.rowKey?.(row) ?? i}
             className="row"
             onClick={() => props.onSelected?.(row)}
           >
@@ -108,10 +153,7 @@ export default function List<T>(props: Props<T>) {
               <div
                 className="delete"
                 title={props.deleteText ?? "Delete"}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  props.onDelete?.(row);
-                }}
+                onClick={(e) => handleDelete(e, row)}
               >
                 <i className="fas fa-trash" />
               </div>
@@ -119,6 +161,16 @@ export default function List<T>(props: Props<T>) {
           </div>
         ))}
       </SimpleBar>
+      {deleteRow && (
+        <Modal
+          onClose={() => setDeleteRow(null)}
+          onDelete={handleConfirmDelete}
+        >
+          {props.deleteModalText
+            ? props.deleteModalText(deleteRow)
+            : "Are you sure you want to delete this entry?"}
+        </Modal>
+      )}
     </div>
   );
 }

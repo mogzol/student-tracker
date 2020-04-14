@@ -30,9 +30,13 @@ body {
   flex-direction: column;
 
   > .header {
-    font-family: "Oswald", sans-serif;
     margin: 20px 0 0;
     height: 100px;
+
+    .title,
+    .sub {
+      font-family: "Oswald", sans-serif;
+    }
 
     .title {
       font-size: 52px;
