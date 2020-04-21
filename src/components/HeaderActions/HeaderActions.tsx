@@ -1,11 +1,10 @@
-import React, { useContext, RefObject } from "react";
+import React, { useContext } from "react";
 import { GoogleContext } from "providers/GoogleProvider/GoogleProvider";
 import Button from "components/Button/Button";
-import "./HeaderActions.scss";
 import StudentForm from "components/StudentForm/StudentForm";
-import Modal from "components/Modal/Modal";
 import CommunicationForm from "components/CommunicationForm/CommunicationForm";
 import { DataContext } from "providers/DataProvider/DataProvider";
+import "./HeaderActions.scss";
 
 export default function HeaderActions() {
   const googleContext = useContext(GoogleContext);

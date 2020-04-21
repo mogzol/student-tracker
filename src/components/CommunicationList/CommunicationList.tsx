@@ -3,6 +3,7 @@ import { DataContext } from "providers/DataProvider/DataProvider";
 import { Communication } from "providers/DataProvider/AppData";
 import List, { Column } from "components/List/List";
 import CommunicationForm from "components/CommunicationForm/CommunicationForm";
+import "./CommunicationList.scss";
 
 interface Props {
   studentName: string;
@@ -20,7 +21,12 @@ const columns: Column<Communication>[] = [
       return <strong className={`type ${typeClassName}`}>{data.type}</strong>;
     },
   },
-  { title: "Details", field: "details", sortable: false, width: 2.5 },
+  {
+    title: "Details",
+    field: "details",
+    sortable: false,
+    width: 2.5,
+  },
 ];
 
 export default function CommunicationList(props: Props) {

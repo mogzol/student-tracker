@@ -1,8 +1,8 @@
 import React from "react";
 import Button from "components/Button/Button";
-import "./StudentDetails.scss";
 import CommunicationList from "components/CommunicationList/CommunicationList";
 import CommunicationForm from "components/CommunicationForm/CommunicationForm";
+import "./StudentDetails.scss";
 
 interface Props {
   name: string | null;

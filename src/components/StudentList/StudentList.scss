@@ -10,9 +10,10 @@
     .rows .row {
       // Lock height
       height: 75px;
+      overflow: hidden;
     }
 
-    .col {
+    .col .content {
       // Display max 3 lines
       -webkit-line-clamp: 3;
       display: -webkit-box;

@@ -44,7 +44,7 @@ body {
       line-height: 58px;
       white-space: nowrap;
 
-      @media screen and (max-width: 950px) {
+      @media screen and (max-width: 975px) {
         font-size: 45px;
       }
     }
@@ -58,7 +58,7 @@ body {
 
   > .main {
     flex-grow: 1;
-    margin-bottom: 30px;
+    margin-bottom: 3vh;
   }
 }
 

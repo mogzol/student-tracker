@@ -144,7 +144,11 @@ export default function List<T>(props: Props<T>) {
               }
 
               return (
-                <div key={i} className="col" style={{ flexGrow: col.width }}>
+                <div
+                  key={i}
+                  className={classNames("col", col.field as string)}
+                  style={{ flexGrow: col.width }}
+                >
                   <div className="content">{colVal}</div>
                 </div>
               );

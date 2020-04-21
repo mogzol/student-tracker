@@ -3,9 +3,8 @@ import Modal from "components/Modal/Modal";
 import FormField from "components/FormField/FormField";
 import DatePicker from "react-datepicker";
 import { DataContext } from "providers/DataProvider/DataProvider";
-import "./CommunicationForm.scss";
-import { capitalize } from "util/string";
 import { Communication } from "providers/DataProvider/AppData";
+import "./CommunicationForm.scss";
 
 interface Props {
   onClose: () => void;
@@ -60,7 +59,7 @@ export default function CommunicationForm(props: Props) {
       selectedType = customType;
     }
 
-    return selectedType.toLowerCase();
+    return selectedType.toLowerCase().trim();
   }
 
   function handleSave() {
@@ -94,7 +93,7 @@ export default function CommunicationForm(props: Props) {
     const communication: Communication = {
       date: date as Date,
       type: getType(),
-      details,
+      details: details.trim(),
     };
 
     if (!props.initialCommunication) {
