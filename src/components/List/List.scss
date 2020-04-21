@@ -39,6 +39,13 @@
 
   .col {
     flex-basis: 0;
+    overflow: hidden;
+    overflow-wrap: break-word;
+
+    .content {
+      margin: 10px 20px;
+      margin-left: 0;
+    }
   }
 
   .rows {
@@ -73,6 +80,25 @@
           &:hover {
             opacity: 0.4;
             color: $dangerColor;
+          }
+        }
+      }
+
+      .col {
+        .date {
+          font-weight: 600;
+        }
+
+        .type {
+          color: $accentAlt2Color;
+          text-transform: capitalize;
+
+          &.email {
+            color: $accentColor;
+          }
+
+          &.phone {
+            color: $accentAlt1Color;
           }
         }
       }

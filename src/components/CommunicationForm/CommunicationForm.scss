@@ -1,0 +1,22 @@
+.component.communication-form {
+  width: 420px;
+
+  .select-type {
+    display: flex;
+
+    select,
+    input {
+      width: unset;
+      min-width: unset;
+    }
+
+    select {
+      flex-grow: 1;
+    }
+
+    input {
+      flex-grow: 3;
+      margin-left: 10px;
+    }
+  }
+}

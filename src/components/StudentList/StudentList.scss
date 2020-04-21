@@ -6,21 +6,18 @@
 }
 
 .component.student-list {
-  .row .col {
-    .date {
-      font-weight: 600;
+  .component.list {
+    .rows .row {
+      // Lock height
+      height: 75px;
     }
 
-    .type {
-      color: $accentAlt2Color;
-
-      &.email {
-        color: $accentColor;
-      }
-
-      &.phone {
-        color: $accentAlt1Color;
-      }
+    .col {
+      // Display max 3 lines
+      -webkit-line-clamp: 3;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   }
 }

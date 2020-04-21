@@ -15,6 +15,12 @@
       margin-bottom: 40px;
     }
 
+    .modal-title {
+      font-size: 22px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
     .modal-buttons {
       display: flex;
       flex-direction: row;
@@ -33,5 +39,9 @@
 
   &.narrow .box {
     max-width: 340px;
+  }
+
+  &.auto .box {
+    max-width: unset;
   }
 }

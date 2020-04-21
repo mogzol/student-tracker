@@ -8,6 +8,18 @@ interface Communications {
   [studentName: string]: Communication[];
 }
 
+interface JsonData {
+  communications: object;
+}
+
+function isJsonData(data: any): data is JsonData {
+  return (
+    data instanceof Object &&
+    (data as JsonData).communications instanceof Object &&
+    !Array.isArray((data as JsonData).communications)
+  );
+}
+
 // Sort function for sorting communications newest to oldest
 function communicationSorter(a: Communication, b: Communication) {
   return b.date.getTime() - a.date.getTime();
@@ -43,17 +55,19 @@ export default class AppData {
   }
 
   static from(data: unknown): AppData {
+    if (!isJsonData(data)) {
+      return new AppData({});
+    }
+
     const communications: Communications = {};
 
-    if (data instanceof Object && !Array.isArray(data)) {
-      for (const [name, arr] of Object.entries(data)) {
-        if (Array.isArray(arr)) {
-          const mapped = arr
-            .map(parseCommunication)
-            .filter((c) => c) as Communication[];
+    for (const [name, arr] of Object.entries(data.communications)) {
+      if (Array.isArray(arr)) {
+        const mapped = arr
+          .map(parseCommunication)
+          .filter((c) => c) as Communication[];
 
-          communications[name] = mapped.sort(communicationSorter);
-        }
+        communications[name] = mapped.sort(communicationSorter);
       }
     }
 
@@ -62,6 +76,10 @@ export default class AppData {
 
   public get names() {
     return Object.keys(this.communications);
+  }
+
+  public toJSON() {
+    return JSON.stringify({ communications: this.communications });
   }
 
   public getLastCommunication(name: string) {
@@ -74,10 +92,17 @@ export default class AppData {
 
   public addStudent(name: string): AppData {
     if (this.communications[name]) {
-      return this;
+      throw new Error(`Student ${name} already exists`);
     }
 
     return new AppData({ ...this.communications, [name]: [] });
+  }
+
+  public removeStudent(name: string): AppData {
+    const newCommunications = { ...this.communications };
+    delete newCommunications[name];
+
+    return new AppData(newCommunications);
   }
 
   public addCommunication(name: string, communication: Communication) {
@@ -86,6 +111,15 @@ export default class AppData {
       [name]: [...(this.communications[name] ?? []), communication].sort(
         communicationSorter
       ),
+    });
+  }
+
+  public removeCommunication(name: string, communication: Communication) {
+    return new AppData({
+      ...this.communications,
+      [name]: [
+        ...this.communications[name]?.filter((c) => c !== communication),
+      ],
     });
   }
 }

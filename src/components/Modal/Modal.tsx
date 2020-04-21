@@ -9,10 +9,11 @@ const MODAL_ROOT = document.getElementById("modal-root") as HTMLElement;
 interface Props {
   className?: string;
   icon?: string;
-  width?: "narrow" | "normal";
+  title?: string;
+  width?: "narrow" | "normal" | "auto";
   onClose?: () => void;
   onDelete?: () => void;
-  onConfirm?: () => void;
+  onSave?: () => void;
 }
 
 export default function Modal(props: React.PropsWithChildren<Props>) {
@@ -20,7 +21,6 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
   // can be displayed simultaneously. Using a lazy initial state (function as the useState param)
   // to avoid creating a new element every render which just ends up getting discarded.
   const [modalRootDiv] = React.useState(() => {
-    console.log("made");
     return document.createElement("div");
   });
 
@@ -32,7 +32,7 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
   }, [modalRootDiv]);
 
   function renderButtons() {
-    if (!props.onClose && !props.onDelete && !props.onConfirm) {
+    if (!props.onClose && !props.onDelete && !props.onSave) {
       return;
     }
 
@@ -41,15 +41,15 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
     if (props.onClose) {
       buttons.push(
         <Button
-          text={props.onConfirm || props.onDelete ? "Cancel" : "Close"}
+          text={props.onSave || props.onDelete ? "Cancel" : "Close"}
           color="transparent"
           onClick={props.onClose}
         />
       );
     }
-    if (props.onConfirm) {
+    if (props.onSave) {
       buttons.push(
-        <Button text="Confirm" color="transparent" onClick={props.onConfirm} />
+        <Button text="Save" color="transparent" onClick={props.onSave} />
       );
     }
     if (props.onDelete) {
@@ -78,6 +78,7 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
       >
         <div className="box flex-center">
           {props.icon && <i className={classNames("modal-icon", props.icon)} />}
+          {props.title && <div className="modal-title">{props.title}</div>}
           {props.children}
           {renderButtons()}
         </div>

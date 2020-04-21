@@ -145,7 +145,7 @@ export default function List<T>(props: Props<T>) {
 
               return (
                 <div key={i} className="col" style={{ flexGrow: col.width }}>
-                  {colVal}
+                  <div className="content">{colVal}</div>
                 </div>
               );
             })}

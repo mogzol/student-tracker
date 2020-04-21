@@ -1,0 +1,53 @@
+{
+  "communications": {
+    "Morgan": [
+      {
+        "date": "2020-03-16T08:25:13",
+        "type": "email",
+        "details": "Something new goes here"
+      },
+      {
+        "date": "2020-03-22T16:34:55",
+        "type": "email",
+        "details": "Something else here"
+      },
+      {
+        "date": "2020-04-02T12:05:01",
+        "type": "phone",
+        "details": "And another one"
+      }
+    ],
+    "Terri": [
+      {
+        "date": "2020-03-18T08:34:13",
+        "type": "email",
+        "details": "More things go here"
+      },
+      {
+        "date": "2020-03-28T13:12:32",
+        "type": "phone",
+        "details": "Other things here"
+      },
+      {
+        "date": "2020-04-03T15:10:01",
+        "type": "phone",
+        "details": "Yet another one"
+      }
+    ],
+    "Angus": [
+      {
+        "date": "2020-03-22T06:34:13",
+        "type": "email",
+        "details": "More things go here"
+      }
+    ],
+    "Jeffery": [
+      {
+        "date": "2020-03-22T06:34:13",
+        "type": "phone",
+        "details": "More things go here"
+      }
+    ],
+    "Bobbert": []
+  }
+}

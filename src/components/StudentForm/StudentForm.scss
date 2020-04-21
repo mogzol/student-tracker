@@ -1,0 +1,21 @@
+@import "vars.scss";
+
+.component.student-form {
+  width: 350px;
+
+  .help-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .name {
+      font-weight: 600;
+      display: inline;
+
+      &:not(:last-child)::after {
+        content: ", ";
+        font-weight: normal;
+      }
+    }
+  }
+}

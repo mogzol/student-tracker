@@ -56,17 +56,17 @@ export default function StudentList(props: Props) {
         columns={columns}
         data={studentRows}
         initialSortField="name"
-        rowKey={(row) => row.name}
+        rowKey={(s) => s.name}
         deleteText="Delete Student"
-        deleteModalText={(row) => (
+        deleteModalText={(s) => (
           <div>
             {"Are you sure you want to delete "}
-            <strong>{row.name}</strong>
+            <strong>{s.name}</strong>
             {"?"}
           </div>
         )}
-        onSelected={(row) => props.onStudentSelected(row.name)}
-        onDelete={(row) => console.log("Delete " + row.name)}
+        onSelected={(s) => props.onStudentSelected(s.name)}
+        onDelete={(s) => dataContext.removeStudent(s.name)}
       />
     </div>
   );

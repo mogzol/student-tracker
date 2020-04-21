@@ -1,5 +1,6 @@
 @import "vars.scss";
 @import "~simplebar/dist/simplebar.min.css";
+@import "~react-datepicker/dist/react-datepicker.css";
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,300&family=Oswald:wght@400&display=swap");
 
@@ -83,13 +84,18 @@ body {
 
 .box {
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: $borderRadius;
   background-color: $boxColor;
   box-shadow: 0 3px 10px $overlayColor;
 }
 
 .rotate {
   animation: rotate 0.8s linear infinite;
+}
+
+// Fix datepicker arrow alignment
+.react-datepicker__navigation.react-datepicker__navigation--next {
+  right: 95px;
 }
 
 @keyframes rotate {

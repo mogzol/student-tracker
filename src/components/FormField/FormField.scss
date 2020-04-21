@@ -1,0 +1,48 @@
+@import "vars.scss";
+
+.component.form-field {
+  &:not(:first-child) {
+    margin-top: 20px;
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .help-text {
+    color: $secondaryColor;
+    font-size: 12px;
+
+    + .error {
+      margin-top: 3px;
+    }
+  }
+
+  .error {
+    color: $dangerColor;
+    font-size: 12px;
+  }
+
+  .react-datepicker-wrapper {
+    display: block;
+  }
+
+  input[type="text"],
+  textarea,
+  select {
+    border-radius: 3px;
+    border: 1px solid #e2e2e2;
+    padding: 10px;
+    min-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+  }
+}
