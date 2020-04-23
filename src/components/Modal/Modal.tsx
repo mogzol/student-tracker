@@ -48,14 +48,10 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
       );
     }
     if (props.onSave) {
-      buttons.push(
-        <Button text="Save" color="transparent" onClick={props.onSave} />
-      );
+      buttons.push(<Button text="Save" color="transparent" onClick={props.onSave} />);
     }
     if (props.onDelete) {
-      buttons.push(
-        <Button text="Delete" color="transparent" onClick={props.onDelete} />
-      );
+      buttons.push(<Button text="Delete" color="transparent" onClick={props.onDelete} />);
     }
 
     return (
@@ -69,13 +65,7 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
 
   function renderModal() {
     return (
-      <div
-        className={classNames(
-          "component modal fill flex-center",
-          props.width,
-          props.className
-        )}
-      >
+      <div className={classNames("component modal fill flex-center", props.width, props.className)}>
         <div className="box flex-center">
           {props.icon && <i className={classNames("modal-icon", props.icon)} />}
           {props.title && <div className="modal-title">{props.title}</div>}

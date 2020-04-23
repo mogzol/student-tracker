@@ -10,4 +10,5 @@ module.exports = {
     "react/self-closing-comp": "error",
     "prettier/prettier": "error",
   },
+  ignorePatterns: ["webpack.config.js", "node_modules/"],
 };

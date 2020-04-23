@@ -59,8 +59,8 @@ export default function StudentForm(props: Props) {
     <Modal onClose={props.onClose} onSave={handleSave} title="Add New Students">
       <div className="component student-form">
         <div>
-          Please enter the names of the students you would like to add,
-          separated by either commas or new lines:
+          Please enter the names of the students you would like to add, separated by either commas
+          or new lines:
         </div>
         <FormField title="Student Names" helpText={renderNames()} error={error}>
           <textarea onChange={textChange} />

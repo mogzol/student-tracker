@@ -9,7 +9,7 @@ interface GoogleContext {
   signIn: () => Promise<void>;
   signOut: () => void;
   getData: () => Promise<object | void>;
-  setData: (data: object) => Promise<void>;
+  setData: (jsonData: string) => Promise<void>;
   clearData: () => Promise<void>;
 }
 
@@ -69,11 +69,11 @@ export default function GoogleProvider(props: React.PropsWithChildren<{}>) {
     });
   }
 
-  async function setData(data: object) {
+  async function setData(jsonData: string) {
     if (error) return;
     return await wrapApi(async () => {
       const files = await api.getFileList();
-      await api.upsertData(files?.[0]?.id, data);
+      await api.upsertData(files?.[0]?.id, jsonData);
     });
   }
 
@@ -93,14 +93,12 @@ export default function GoogleProvider(props: React.PropsWithChildren<{}>) {
       {error && (
         <Modal icon="fas fa-exclamation-triangle danger">
           <span>
-            An error occurred communicating with Google. Please refresh the page
-            and try again.
+            An error occurred communicating with Google. Please refresh the page and try again.
             {(error.message || error.result?.error?.message) && (
               <>
                 <br />
                 <br />
-                <strong>Error Details:</strong>{" "}
-                {error.message || error.result?.error?.message}
+                <strong>Error Details:</strong> {error.message || error.result?.error?.message}
               </>
             )}
           </span>

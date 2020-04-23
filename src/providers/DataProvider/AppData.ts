@@ -63,9 +63,7 @@ export default class AppData {
 
     for (const [name, arr] of Object.entries(data.communications)) {
       if (Array.isArray(arr)) {
-        const mapped = arr
-          .map(parseCommunication)
-          .filter((c) => c) as Communication[];
+        const mapped = arr.map(parseCommunication).filter((c) => c) as Communication[];
 
         communications[name] = mapped.sort(communicationSorter);
       }
@@ -87,7 +85,7 @@ export default class AppData {
   }
 
   public getCommunications(name: string) {
-    return this.communications[name];
+    return this.communications[name] ?? [];
   }
 
   public addStudent(name: string): AppData {
@@ -108,18 +106,14 @@ export default class AppData {
   public addCommunication(name: string, communication: Communication) {
     return new AppData({
       ...this.communications,
-      [name]: [...(this.communications[name] ?? []), communication].sort(
-        communicationSorter
-      ),
+      [name]: [...(this.communications[name] ?? []), communication].sort(communicationSorter),
     });
   }
 
   public removeCommunication(name: string, communication: Communication) {
     return new AppData({
       ...this.communications,
-      [name]: [
-        ...this.communications[name]?.filter((c) => c !== communication),
-      ],
+      [name]: [...this.communications[name]?.filter((c) => c !== communication)],
     });
   }
 }

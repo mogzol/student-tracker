@@ -34,20 +34,16 @@ export default function CommunicationForm(props: Props) {
   let initialCustomType = "";
   if (props.initialCommunication?.type) {
     initialType =
-      props.initialCommunication.type === "email" ||
-      props.initialCommunication.type === "phone"
+      props.initialCommunication.type === "email" || props.initialCommunication.type === "phone"
         ? props.initialCommunication.type
         : "other";
-    initialCustomType =
-      initialType === "other" ? props.initialCommunication.type : "";
+    initialCustomType = initialType === "other" ? props.initialCommunication.type : "";
   }
 
   const [type, setType] = React.useState<CommunicationType>(initialType);
   const [customType, setCustomType] = React.useState(initialCustomType);
 
-  const [details, setDetails] = React.useState(
-    props.initialCommunication?.details ?? ""
-  );
+  const [details, setDetails] = React.useState(props.initialCommunication?.details ?? "");
 
   const [dateError, setDateError] = React.useState("");
   const [typeError, setTypeError] = React.useState("");
@@ -99,11 +95,7 @@ export default function CommunicationForm(props: Props) {
     if (!props.initialCommunication) {
       dataContext.addCommunications(names, communication);
     } else {
-      dataContext.replaceCommunication(
-        names[0],
-        props.initialCommunication,
-        communication
-      );
+      dataContext.replaceCommunication(names[0], props.initialCommunication, communication);
     }
 
     props.onClose();
@@ -114,16 +106,11 @@ export default function CommunicationForm(props: Props) {
   }`;
 
   return (
-    <Modal
-      title={title}
-      width="auto"
-      onClose={props.onClose}
-      onSave={handleSave}
-    >
+    <Modal title={title} width="auto" onClose={props.onClose} onSave={handleSave}>
       <div className="component communication-form">
         {props.multi && (
           <FormField title="For Students">
-            <select value="all">
+            <select value="all" onChange={() => null /* TODO: this */}>
               <option value="all">All Students</option>
               <option value="select" disabled>
                 Choose Students (not implemented, use details page instead)

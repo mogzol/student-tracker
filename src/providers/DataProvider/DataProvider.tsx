@@ -6,6 +6,8 @@ import FileSaver from "file-saver";
 
 interface DataContext {
   data: AppData;
+  loading: boolean;
+  saving: boolean;
   addStudents: (names: string[]) => void;
   removeStudent: (name: string) => void;
   addCommunications: (names: string[], communication: Communication) => void;
@@ -23,6 +25,8 @@ const emptyData = new AppData({});
 
 export const DataContext = React.createContext<DataContext>({
   data: emptyData,
+  loading: false,
+  saving: false,
   addStudents: () => {},
   removeStudent: () => {},
   addCommunications: () => {},
@@ -36,22 +40,44 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
   const googleContext = React.useContext(GoogleContext);
   const [data, setData] = React.useState<AppData>(emptyData);
   const [loading, setLoading] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
+
+  const savePromiseRef = React.useRef<Promise<void>>(Promise.resolve());
+  const lastSavedDataRef = React.useRef<AppData | null>(null);
 
   // Load data on sign in, clear on sign out
   React.useEffect(() => {
     async function retrieveData() {
-      // setData(AppData.from(await googleContext.getData()));
-      setData(AppData.from({}));
+      // When loading from Google, we set lastSavedData to prevent re-saving
+      lastSavedDataRef.current = AppData.from(await googleContext.getData());
+      setData(lastSavedDataRef.current);
       setLoading(false);
     }
 
     if (!googleContext.signedIn) {
       setData(emptyData);
+      lastSavedDataRef.current = null;
     } else if (data === emptyData && !loading) {
       setLoading(true);
       retrieveData();
     }
   }, [googleContext, data, loading]);
+
+  React.useEffect(() => {
+    if (googleContext.signedIn && lastSavedDataRef.current && lastSavedDataRef.current !== data) {
+      setSaving(true);
+      const newSavePromise = savePromiseRef.current.then(async () => {
+        await googleContext.setData(data.toJSON());
+
+        // If savePromiseRef is still this promise, then we can set saving false.
+        if (savePromiseRef.current === newSavePromise) {
+          setSaving(false);
+        }
+      });
+
+      savePromiseRef.current = newSavePromise;
+    }
+  }, [googleContext, data]);
 
   function addStudents(names: string[]) {
     let newData: AppData = data;
@@ -88,9 +114,7 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
     newCommunication: Communication
   ) {
     setData(
-      data
-        .removeCommunication(name, oldCommunication)
-        .addCommunication(name, newCommunication)
+      data.removeCommunication(name, oldCommunication).addCommunication(name, newCommunication)
     );
   }
 
@@ -98,9 +122,7 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
     const fileList = await fileDialog({ accept: "application/json" });
     if (fileList.length) {
       const decoder = new TextDecoder("utf-8");
-      const jsonData = JSON.parse(
-        decoder.decode(new Uint8Array(await fileList[0].arrayBuffer()))
-      );
+      const jsonData = JSON.parse(decoder.decode(new Uint8Array(await fileList[0].arrayBuffer())));
 
       setData(AppData.from(jsonData));
     }
@@ -130,6 +152,8 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
     <DataContext.Provider
       value={{
         data,
+        loading,
+        saving,
         addStudents,
         removeStudent,
         addCommunications,

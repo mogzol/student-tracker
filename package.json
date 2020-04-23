@@ -6,7 +6,8 @@
     "lint": "eslint './src/**/*.{js,jsx,ts,tsx}'",
     "lint-fix": "eslint --fix './src/**/*.{js,jsx,ts,tsx}'",
     "build": "rm -rf dist && mkdir -p dist && cp -r public/* dist && webpack",
-    "dev": "npm run build -- --mode=development --watch & http-server ./dist -p 8000"
+    "dev": "npm run build -- --mode=development --watch & npm run serve",
+    "serve": "http-server ./dist -p 8000"
   },
   "dependencies": {
     "@types/classnames": "^2.2.10",

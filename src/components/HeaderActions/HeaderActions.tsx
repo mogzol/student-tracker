@@ -5,6 +5,8 @@ import StudentForm from "components/StudentForm/StudentForm";
 import CommunicationForm from "components/CommunicationForm/CommunicationForm";
 import { DataContext } from "providers/DataProvider/DataProvider";
 import "./HeaderActions.scss";
+import Spinner from "components/Spinner/Spinner";
+import classNames from "classnames";
 
 export default function HeaderActions() {
   const googleContext = useContext(GoogleContext);
@@ -42,11 +44,15 @@ export default function HeaderActions() {
   return (
     <div className={"component header-actions"}>
       <div className="row">
+        <div className={classNames("saving-indicator", { hidden: !dataContext.saving })}>
+          <Spinner size="small" /> Saving
+        </div>
         <Button
           text="Sign Out"
           color="transparent"
           icon="fas fa-sign-out-alt"
           onClick={googleContext.signOut}
+          disabled={dataContext.saving}
         />
       </div>
       <div className="row">
@@ -88,10 +94,7 @@ export default function HeaderActions() {
       )}
       {addStudents && <StudentForm onClose={() => setAddStudents(false)} />}
       {addCommunications && (
-        <CommunicationForm
-          onClose={() => setAddCommunications(false)}
-          multi={true}
-        />
+        <CommunicationForm onClose={() => setAddCommunications(false)} multi={true} />
       )}
     </div>
   );

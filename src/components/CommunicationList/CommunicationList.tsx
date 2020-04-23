@@ -32,10 +32,7 @@ const columns: Column<Communication>[] = [
 export default function CommunicationList(props: Props) {
   const dataContext = useContext(DataContext);
 
-  const [
-    editCommunication,
-    setEditCommunication,
-  ] = React.useState<Communication | null>(null);
+  const [editCommunication, setEditCommunication] = React.useState<Communication | null>(null);
 
   const communications = React.useMemo<Communication[]>(
     () => dataContext.data.getCommunications(props.studentName),

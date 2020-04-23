@@ -8,6 +8,7 @@ interface ButtonProps {
   size?: "normal" | "small";
   icon?: string;
   className?: string;
+  disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
 }
 
@@ -25,13 +26,9 @@ function Button(props: ButtonProps, ref: React.Ref<HTMLButtonElement>) {
   return (
     <button
       ref={ref}
-      className={classNames(
-        "component button",
-        props.className,
-        props.color,
-        props.size
-      )}
+      className={classNames("component button", props.className, props.color, props.size)}
       onClick={handleClick}
+      disabled={props.disabled}
     >
       {props.icon && (
         <>

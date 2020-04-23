@@ -26,13 +26,9 @@ interface Props<T> {
 }
 
 export default function List<T>(props: Props<T>) {
-  const [sortField, setSortField] = React.useState<keyof T | null>(
-    props.initialSortField ?? null
-  );
+  const [sortField, setSortField] = React.useState<keyof T | null>(props.initialSortField ?? null);
 
-  const [sortDir, setSortDir] = React.useState<"asc" | "desc">(
-    props.initialSortDir ?? "asc"
-  );
+  const [sortDir, setSortDir] = React.useState<"asc" | "desc">(props.initialSortDir ?? "asc");
 
   const [deleteRow, setDeleteRow] = React.useState<T | null>(null);
 
@@ -166,10 +162,7 @@ export default function List<T>(props: Props<T>) {
         ))}
       </SimpleBar>
       {deleteRow && (
-        <Modal
-          onClose={() => setDeleteRow(null)}
-          onDelete={handleConfirmDelete}
-        >
+        <Modal onClose={() => setDeleteRow(null)} onDelete={handleConfirmDelete}>
           {props.deleteModalText
             ? props.deleteModalText(deleteRow)
             : "Are you sure you want to delete this entry?"}

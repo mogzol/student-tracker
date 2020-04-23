@@ -14,6 +14,15 @@
     .button {
       margin-left: 10px;
     }
+
+    .saving-indicator:not(.hidden) {
+      display: flex;
+      align-items: center;
+      height: 42px;
+      width: 80px;
+      font-size: 14px;
+      font-weight: 600;
+    }
   }
 
   .more-menu {

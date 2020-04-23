@@ -2,9 +2,7 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const API_KEY = process.env.API_KEY;
 
 const SCOPES = "https://www.googleapis.com/auth/drive.appdata";
-const DISCOVERY_DOCS = [
-  "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
-];
+const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
 
 function checkResponse(response: gapi.client.Response<any>) {
   if (!response.status || response.status >= 300) {
@@ -14,9 +12,7 @@ function checkResponse(response: gapi.client.Response<any>) {
 
 export async function initializeApi() {
   // Loads both client and auth2 together to save time
-  const loadPromise = new Promise<void>((res) =>
-    gapi.load("client:auth2", res)
-  );
+  const loadPromise = new Promise<void>((res) => gapi.load("client:auth2", res));
   await loadPromise;
 
   // Once loaded, we can initialize the API with our keys
@@ -52,8 +48,8 @@ export async function getFileList(): Promise<gapi.client.drive.File[]> {
   const response = await gapi.client.drive.files.list({
     spaces: "appDataFolder",
     fields: "files(id, name, modifiedTime)",
-    orderBy: "modifiedTime",
-    pageSize: 5, // 1 doesn't work for some reason. There should only ever be 1 file anyways.
+    orderBy: "modifiedTime desc",
+    pageSize: 1, // 1 doesn't work for some reason. There should only ever be 1 file anyways.
   });
 
   checkResponse(response);
@@ -67,7 +63,7 @@ export async function deleteFile(fileId?: string) {
 }
 
 // Inspired by https://stackoverflow.com/a/35182924/1687909
-export async function upsertData(fileId: string | undefined, data: object) {
+export async function upsertData(fileId: string | undefined, jsonData: string) {
   const boundary = "-------314159265358979323846";
   const delimiter = `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n`;
   const closeDelimiter = `\r\n--${boundary}--`;
@@ -79,11 +75,7 @@ export async function upsertData(fileId: string | undefined, data: object) {
   };
 
   const multipartRequestBody =
-    delimiter +
-    JSON.stringify(metadata) +
-    delimiter +
-    JSON.stringify(data) +
-    closeDelimiter;
+    delimiter + JSON.stringify(metadata) + delimiter + jsonData + closeDelimiter;
 
   const response = await gapi.client.request({
     path: `/upload/drive/v3/files/${fileId || ""}`,

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import GoogleProvider from "providers/GoogleProvider/GoogleProvider";
+import GoogleProvider, { GoogleContext } from "providers/GoogleProvider/GoogleProvider";
 import DataProvider from "providers/DataProvider/DataProvider";
 import RequireLogin from "components/RequireLogin/RequireLogin";
 import HeaderActions from "components/HeaderActions/HeaderActions";
@@ -9,7 +9,14 @@ import StudentDetails from "components/StudentDetails/StudentDetails";
 import "./index.scss";
 
 function App() {
+  const googleContext = React.useContext(GoogleContext);
   const [studentName, setStudentName] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!googleContext.signedIn) {
+      setStudentName(null);
+    }
+  }, [googleContext.signedIn]);
 
   return (
     <div className="app">
@@ -20,10 +27,7 @@ function App() {
       </div>
       <div className="main box flex-center">
         <RequireLogin>
-          <StudentDetails
-            name={studentName}
-            onBack={() => setStudentName(null)}
-          />
+          <StudentDetails name={studentName} onBack={() => setStudentName(null)} />
           <StudentList onStudentSelected={setStudentName} />
         </RequireLogin>
       </div>
