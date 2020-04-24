@@ -12,8 +12,8 @@ interface Props {
   title?: string;
   width?: "narrow" | "normal" | "auto";
   onClose?: () => void;
-  onDelete?: () => void;
   onSave?: () => void;
+  saveText?: string;
 }
 
 export default function Modal(props: React.PropsWithChildren<Props>) {
@@ -28,11 +28,15 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
     MODAL_ROOT.appendChild(modalRootDiv);
     return () => {
       MODAL_ROOT.removeChild(modalRootDiv);
+
+      // Something weird happens with text selections if you close and open modals, so clear
+      // selection on close
+      window.getSelection()?.removeAllRanges();
     };
   }, [modalRootDiv]);
 
   function renderButtons() {
-    if (!props.onClose && !props.onDelete && !props.onSave) {
+    if (!props.onClose && !props.onSave) {
       return;
     }
 
@@ -41,17 +45,17 @@ export default function Modal(props: React.PropsWithChildren<Props>) {
     if (props.onClose) {
       buttons.push(
         <Button
-          text={props.onSave || props.onDelete ? "Cancel" : "Close"}
+          text={props.onSave ? "Cancel" : "Close"}
           color="transparent"
           onClick={props.onClose}
         />
       );
     }
+
     if (props.onSave) {
-      buttons.push(<Button text="Save" color="transparent" onClick={props.onSave} />);
-    }
-    if (props.onDelete) {
-      buttons.push(<Button text="Delete" color="transparent" onClick={props.onDelete} />);
+      buttons.push(
+        <Button text={props.saveText ?? "Save"} color="transparent" onClick={props.onSave} />
+      );
     }
 
     return (

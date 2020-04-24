@@ -162,7 +162,7 @@ export default function List<T>(props: Props<T>) {
         ))}
       </SimpleBar>
       {deleteRow && (
-        <Modal onClose={() => setDeleteRow(null)} onDelete={handleConfirmDelete}>
+        <Modal onClose={() => setDeleteRow(null)} onSave={handleConfirmDelete} saveText="Delete">
           {props.deleteModalText
             ? props.deleteModalText(deleteRow)
             : "Are you sure you want to delete this entry?"}

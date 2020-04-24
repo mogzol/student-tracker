@@ -7,6 +7,7 @@ import { DataContext } from "providers/DataProvider/DataProvider";
 import "./HeaderActions.scss";
 import Spinner from "components/Spinner/Spinner";
 import classNames from "classnames";
+import Modal from "components/Modal/Modal";
 
 export default function HeaderActions() {
   const googleContext = useContext(GoogleContext);
@@ -15,6 +16,7 @@ export default function HeaderActions() {
   const [moreOpen, setMoreOpen] = React.useState(false);
   const [addStudents, setAddStudents] = React.useState(false);
   const [addCommunications, setAddCommunications] = React.useState(false);
+  const [clearData, setClearData] = React.useState(false);
 
   const moreMenuRef = React.useRef<HTMLDivElement>(null);
   const moreButtonRef = React.useRef<HTMLButtonElement>(null);
@@ -82,6 +84,9 @@ export default function HeaderActions() {
           <div className="option" onClick={() => dataContext.exportData()}>
             <i className="fas fa-fw fa-file-export" /> Export Data
           </div>
+          <div className="option" onClick={() => menuItemClick(setClearData)}>
+            <i className="fas fa-fw fa-times-circle" /> Clear Data
+          </div>
           <a
             href="https://github.com/mogzol/student-tracker"
             className="option"
@@ -95,6 +100,25 @@ export default function HeaderActions() {
       {addStudents && <StudentForm onClose={() => setAddStudents(false)} />}
       {addCommunications && (
         <CommunicationForm onClose={() => setAddCommunications(false)} multi={true} />
+      )}
+      {clearData && (
+        <Modal
+          onClose={() => setClearData(false)}
+          onSave={() => {
+            dataContext.clearData();
+            setClearData(false);
+          }}
+          title="Clear Data?"
+          saveText="Delete Everything"
+        >
+          <div>
+            This will <strong>delete all</strong> of your students, communications, and any other
+            data in Student Communication Tracker.
+            <br />
+            <br />
+            Are you sure you want to continue?
+          </div>
+        </Modal>
       )}
     </div>
   );

@@ -1,3 +1,5 @@
+import LZString from "lz-string";
+
 const CLIENT_ID = process.env.CLIENT_ID;
 const API_KEY = process.env.API_KEY;
 
@@ -65,7 +67,8 @@ export async function deleteFile(fileId?: string) {
 // Inspired by https://stackoverflow.com/a/35182924/1687909
 export async function upsertData(fileId: string | undefined, jsonData: string) {
   const boundary = "-------314159265358979323846";
-  const delimiter = `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n`;
+  const delimiterJSON = `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n`;
+  const delimiterText = `\r\n--${boundary}\r\nContent-Type: text/plain\r\n\r\n`;
   const closeDelimiter = `\r\n--${boundary}--`;
 
   const metadata = {
@@ -74,8 +77,10 @@ export async function upsertData(fileId: string | undefined, jsonData: string) {
     ...(!fileId && { parents: ["appDataFolder"] }),
   };
 
+  const compressedData = LZString.compressToUTF16(jsonData);
+
   const multipartRequestBody =
-    delimiter + JSON.stringify(metadata) + delimiter + jsonData + closeDelimiter;
+    delimiterJSON + JSON.stringify(metadata) + delimiterText + compressedData + closeDelimiter;
 
   const response = await gapi.client.request({
     path: `/upload/drive/v3/files/${fileId || ""}`,
@@ -89,12 +94,25 @@ export async function upsertData(fileId: string | undefined, jsonData: string) {
   return response;
 }
 
-export async function downloadFile(fileId: string | undefined) {
+export async function downloadFile(fileId: string | undefined): Promise<object | void> {
   if (!fileId) return;
 
   const response = await gapi.client.drive.files.get({ fileId, alt: "media" });
   checkResponse(response);
 
-  // Result will not be a File, it will be the JSON contents as an object.
-  return response.result as object;
+  if (response.result instanceof Object) {
+    // Support uncompressed data (for backwards compatibility)
+    return response.result;
+  } else {
+    // Data is likely compressed, decompress it
+    const decompressed = LZString.decompressFromUTF16(response.body);
+    try {
+      const json = JSON.parse(decompressed as string);
+      if (json instanceof Object) {
+        return json;
+      }
+    } catch {
+      return;
+    }
+  }
 }

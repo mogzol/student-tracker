@@ -19,6 +19,7 @@ interface DataContext {
   ) => void;
   exportData: () => void;
   importData: () => void;
+  clearData: () => void;
 }
 
 const emptyData = new AppData({});
@@ -34,6 +35,7 @@ export const DataContext = React.createContext<DataContext>({
   replaceCommunication: () => {},
   exportData: () => {},
   importData: () => {},
+  clearData: () => {},
 });
 
 export default function DataProvider(props: React.PropsWithChildren<{}>) {
@@ -148,6 +150,10 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
     FileSaver.saveAs(blob, `Student Tracker Export (${dateString}).json`);
   }
 
+  function clearData() {
+    setData(AppData.from({}));
+  }
+
   return (
     <DataContext.Provider
       value={{
@@ -161,6 +167,7 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
         replaceCommunication,
         importData,
         exportData,
+        clearData,
       }}
     >
       {props.children}
