@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { DataContext } from "providers/DataProvider/DataProvider";
 import { Communication } from "providers/DataProvider/AppData";
 import List, { Column } from "components/List/List";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const columns: Column<StudentData>[] = [
-  { title: "Student Name", field: "name", sortable: true, width: 1.2 },
+  { title: "Student Name", field: "name", sortable: true, width: 1 },
   {
     title: "Last Contacted",
     field: "date",
@@ -36,14 +36,14 @@ const columns: Column<StudentData>[] = [
       );
     },
   },
-  { title: "Details", field: "details", sortable: false, width: 1.6 },
+  { title: "Details", field: "details", sortable: false, width: 1.8 },
 ];
 
 export default function StudentList(props: Props) {
-  const dataContext = useContext(DataContext);
+  const dataContext = React.useContext(DataContext);
 
   const studentRows = React.useMemo<StudentData[]>(() => {
-    const studentNames = dataContext.data.names;
+    const studentNames = dataContext.data.studentNames;
     return studentNames.map((name) => ({
       name,
       ...dataContext.data.getLastCommunication(name),
@@ -60,9 +60,9 @@ export default function StudentList(props: Props) {
         deleteText="Delete Student"
         deleteModalText={(s) => (
           <div>
-            {"Are you sure you want to delete "}
+            {"Are you sure you want to delete the student "}
             <strong>{s.name}</strong>
-            {"?"}
+            {" and all communications associated with them?"}
           </div>
         )}
         onSelected={(s) => props.onStudentSelected(s.name)}

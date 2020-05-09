@@ -1,6 +1,6 @@
 import React from "react";
 import { GoogleContext } from "../GoogleProvider/GoogleProvider";
-import AppData, { Communication } from "./AppData";
+import AppData, { Communication, ActivityData } from "./AppData";
 import fileDialog from "file-dialog";
 import FileSaver from "file-saver";
 
@@ -17,12 +17,13 @@ interface DataContext {
     oldCommunication: Communication,
     newCommunication: Communication
   ) => void;
+  addActivity: (name: string, activity: ActivityData) => void;
   exportData: () => void;
   importData: () => void;
   clearData: () => void;
 }
 
-const emptyData = new AppData({});
+const emptyData = new AppData({}, {});
 
 export const DataContext = React.createContext<DataContext>({
   data: emptyData,
@@ -33,6 +34,7 @@ export const DataContext = React.createContext<DataContext>({
   addCommunications: () => {},
   removeCommunication: () => {},
   replaceCommunication: () => {},
+  addActivity: () => {},
   exportData: () => {},
   importData: () => {},
   clearData: () => {},
@@ -120,6 +122,10 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
     );
   }
 
+  function addActivity(name: string, activity: ActivityData) {
+    setData(data.addActivity(name, activity));
+  }
+
   async function importData() {
     const fileList = await fileDialog({ accept: "application/json" });
     if (fileList.length) {
@@ -165,6 +171,7 @@ export default function DataProvider(props: React.PropsWithChildren<{}>) {
         addCommunications,
         removeCommunication,
         replaceCommunication,
+        addActivity,
         importData,
         exportData,
         clearData,

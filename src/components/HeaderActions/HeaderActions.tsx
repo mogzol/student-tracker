@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { GoogleContext } from "providers/GoogleProvider/GoogleProvider";
 import Button from "components/Button/Button";
 import StudentForm from "components/StudentForm/StudentForm";
@@ -10,8 +10,8 @@ import classNames from "classnames";
 import Modal from "components/Modal/Modal";
 
 export default function HeaderActions() {
-  const googleContext = useContext(GoogleContext);
-  const dataContext = useContext(DataContext);
+  const googleContext = React.useContext(GoogleContext);
+  const dataContext = React.useContext(DataContext);
 
   const [moreOpen, setMoreOpen] = React.useState(false);
   const [addStudents, setAddStudents] = React.useState(false);
@@ -39,9 +39,11 @@ export default function HeaderActions() {
     setter(true);
   }
 
-  if (!googleContext.signedIn) {
+  if (!googleContext.signedIn || dataContext.loading) {
     return null;
   }
+
+  const showAddCommunications = dataContext.data.studentNames.length > 0;
 
   return (
     <div className={"component header-actions"}>
@@ -66,18 +68,29 @@ export default function HeaderActions() {
           onClick={() => setMoreOpen(!moreOpen)}
         />
 
-        <Button
-          text="Add Communications"
-          color="transparent"
-          icon="fas fa-plus"
-          onClick={() => setAddCommunications(true)}
-        />
+        {showAddCommunications ? (
+          <Button
+            text="Add Communications"
+            color="transparent"
+            icon="fas fa-plus"
+            onClick={() => setAddCommunications(true)}
+          />
+        ) : (
+          <Button
+            text="Add Students"
+            color="transparent"
+            icon="fas fa-user-plus"
+            onClick={() => setAddStudents(true)}
+          />
+        )}
       </div>
       {moreOpen && (
         <div className="more-menu" ref={moreMenuRef}>
-          <div className="option" onClick={() => menuItemClick(setAddStudents)}>
-            <i className="fas fa-fw fa-user-plus" /> Add Students
-          </div>
+          {showAddCommunications && (
+            <div className="option" onClick={() => menuItemClick(setAddStudents)}>
+              <i className="fas fa-fw fa-user-plus" /> Add Students
+            </div>
+          )}
           <div className="option" onClick={() => dataContext.importData()}>
             <i className="fas fa-fw fa-file-import" /> Import Data
           </div>

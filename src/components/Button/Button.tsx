@@ -8,6 +8,7 @@ interface ButtonProps {
   size?: "normal" | "small";
   icon?: string;
   className?: string;
+  title?: string;
   disabled?: boolean;
   onClick?: (e: React.MouseEvent) => void;
 }
@@ -17,7 +18,7 @@ function Button(props: ButtonProps, ref: React.Ref<HTMLButtonElement>) {
     // If clicked via mouse, unfocus after click for better appearance
     // e.detail is how many clicks happened. For keyboards, it will be 0
     if (e.detail !== 0) {
-      (e.target as HTMLElement).blur();
+      (e.currentTarget as HTMLElement).blur();
     }
 
     props.onClick?.(e);
@@ -29,6 +30,7 @@ function Button(props: ButtonProps, ref: React.Ref<HTMLButtonElement>) {
       className={classNames("component button", props.className, props.color, props.size)}
       onClick={handleClick}
       disabled={props.disabled}
+      title={props.title}
     >
       {props.icon && (
         <>

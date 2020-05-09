@@ -9,11 +9,11 @@ body,
 #root,
 .app {
   height: 100%;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
-  font-size: 16px;
   color: $primaryColor;
   background: $backgroundColor;
   font-family: "Open Sans", sans-serif;
@@ -23,7 +23,7 @@ body {
 
 .app {
   // TODO: Remove min-width and make mobile-friendly
-  max-width: 1000px;
+  max-width: 1200px;
   min-width: 800px;
   margin: 0 auto;
   padding: 0 10px;
@@ -31,7 +31,7 @@ body {
   flex-direction: column;
 
   > .header {
-    margin: 20px 0 0;
+    margin: 20px 0 0 20px;
     height: 100px;
 
     .title,
@@ -75,6 +75,10 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  &.horizontal {
+    flex-direction: row;
+  }
 }
 
 .fill {

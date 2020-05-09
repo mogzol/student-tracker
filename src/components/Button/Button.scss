@@ -8,11 +8,12 @@
   border-radius: $buttonBorderRadius;
   padding: 10px 20px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 600;
   box-shadow: 0 2px 5px $overlayColor;
   transition: background-color 0.2s;
   display: block;
+  white-space: nowrap;
 
   &:hover,
   &:focus {
@@ -39,8 +40,13 @@
     }
   }
 
+  &:disabled {
+    cursor: auto;
+    pointer-events: none;
+  }
+
   &.small {
-    font-size: 14px;
+    font-size: 0.9em;
   }
 
   i {

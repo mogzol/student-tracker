@@ -14,8 +14,8 @@
     }
 
     .col .content {
-      // Display max 3 lines
-      -webkit-line-clamp: 3;
+      // Display max 2 lines
+      -webkit-line-clamp: 2;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;

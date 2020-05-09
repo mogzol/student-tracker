@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { DataContext } from "providers/DataProvider/DataProvider";
 import { Communication } from "providers/DataProvider/AppData";
 import List, { Column } from "components/List/List";
@@ -30,12 +30,12 @@ const columns: Column<Communication>[] = [
 ];
 
 export default function CommunicationList(props: Props) {
-  const dataContext = useContext(DataContext);
+  const dataContext = React.useContext(DataContext);
 
   const [editCommunication, setEditCommunication] = React.useState<Communication | null>(null);
 
   const communications = React.useMemo<Communication[]>(
-    () => dataContext.data.getCommunications(props.studentName),
+    () => dataContext.data.getStudentCommunications(props.studentName),
     [dataContext.data, props.studentName]
   );
 

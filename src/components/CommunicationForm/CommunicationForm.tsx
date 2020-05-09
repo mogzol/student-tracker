@@ -81,7 +81,7 @@ export default function CommunicationForm(props: Props) {
     // Currently, multi adds to all students
     let names: string[];
     if (props.multi) {
-      names = dataContext.data.names;
+      names = dataContext.data.studentNames;
     } else {
       names = [props.studentName as string];
     }

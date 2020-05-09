@@ -6,14 +6,14 @@
   }
 
   .title {
-    font-size: 14px;
+    font-size: 0.9em;
     font-weight: 600;
     margin-bottom: 6px;
   }
 
   .help-text {
     color: $secondaryColor;
-    font-size: 12px;
+    font-size: 0.75em;
 
     + .error {
       margin-top: 3px;
@@ -22,7 +22,7 @@
 
   .error {
     color: $dangerColor;
-    font-size: 12px;
+    font-size: 0.75em;
   }
 
   .react-datepicker-wrapper {
